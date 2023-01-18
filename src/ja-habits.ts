@@ -1,23 +1,22 @@
 //Importando o framework
 import Fastify from "fastify";
 
+//Importando o cors
+import cors  from '@fastify/cors'
+
 //Importando do db
 import { PrismaClient } from '@prisma/client'
 
 const app = Fastify()
 const prisma = new PrismaClient()
 
-app.get('/hello', () => {
+app.register(cors)
 
-    const habits = prisma.habits.findMany({
-        where: {
-            title: {
-                
-            }
-        }
-    })
+app.get('/hello', async () => {
 
-    return'Hello World'
+    const habits = await prisma.habit.findMany()
+
+    return habits
 })
 
 app.listen({
